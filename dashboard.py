@@ -25,77 +25,97 @@ from utils import (
 
 
 def apply_custom_css():
-    """Inject a classy, authentic, natural CSS color theme into Streamlit."""
+    """Inject an aggressive, classy, authentic natural CSS color theme into Streamlit."""
     st.markdown(
         """
         <style>
-        /* Natural & Classy Color Palette */
-        /* Background: Dark Warm Slate (#18181B / #27272A) */
-        .stApp {
-            background-color: #18181B;
-            color: #F5F5F4;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        /* Force Natural Dark Slate Background & Text Colors */
+        html, body, [data-testid="stAppViewContainer"], .stApp {
+            background-color: #18181B !important;
+            color: #F5F5F4 !important;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         }
 
-        /* Sidebar Styling */
+        /* Top Header Navigation Bar */
+        header[data-testid="stHeader"] {
+            background-color: #18181B !important;
+        }
+
+        /* Sidebar Styling - Dark Slate */
         section[data-testid="stSidebar"] {
-            background-color: #111827;
-            border-right: 1px solid #374151;
+            background-color: #111827 !important;
+            border-right: 1px solid #374151 !important;
+        }
+        section[data-testid="stSidebar"] * {
+            color: #E7E5E4 !important;
         }
         
-        /* Metric Card Styling - Natural Emerald & Gold accents */
+        /* Metric Card Styling - Natural Emerald (#10B981) Accents */
         div[data-testid="stMetricValue"] {
-            font-size: 2.1rem !important;
+            font-size: 2.2rem !important;
             font-weight: 700 !important;
             color: #10B981 !important; /* Natural Emerald */
         }
         
+        div[data-testid="stMetricLabel"] {
+            color: #A1A1AA !important;
+            font-weight: 600 !important;
+        }
+
         div[data-testid="stMetric"] {
-            background: #27272A;
-            border: 1px solid #3F3F46;
-            border-radius: 10px;
-            padding: 16px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            background-color: #27272A !important;
+            border: 1px solid #3F3F46 !important;
+            border-radius: 10px !important;
+            padding: 16px !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
         }
 
         /* Buttons Styling - Forest Emerald & Natural Slate */
         .stButton > button {
-            background: linear-gradient(135deg, #059669 0%, #047857 100%);
-            color: #FFFFFF;
-            border: 1px solid #065F46;
-            border-radius: 8px;
-            font-weight: 600;
-            padding: 0.5rem 1.2rem;
-            transition: all 0.2s ease-in-out;
+            background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+            color: #FFFFFF !important;
+            border: 1px solid #065F46 !important;
+            border-radius: 8px !important;
+            font-weight: 600 !important;
+            padding: 0.5rem 1.2rem !important;
+            transition: all 0.2s ease-in-out !important;
         }
         .stButton > button:hover {
-            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-            border-color: #34D399;
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4) !important;
+            border-color: #34D399 !important;
         }
         
-        /* Classy Badges */
-        .badge-applied { background-color: #1E293B; color: #94A3B8; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; border: 1px solid #475569; }
-        .badge-interview { background-color: #78350F; color: #FDE68A; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; border: 1px solid #92400E; }
-        .badge-offer { background-color: #064E3B; color: #A7F3D0; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; border: 1px solid #047857; }
-        .badge-rejected { background-color: #7F1D1D; color: #FCA5A5; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; border: 1px solid #991B1B; }
+        /* Inputs, Selectboxes, Textareas */
+        input, select, textarea, div[data-baseweb="select"] {
+            background-color: #27272A !important;
+            color: #F5F5F4 !important;
+            border-color: #3F3F46 !important;
+        }
         
-        /* Job Card Styling */
+        /* Expanders & Cards */
+        div[data-testid="stExpander"] {
+            background-color: #27272A !important;
+            border: 1px solid #3F3F46 !important;
+            border-radius: 10px !important;
+        }
+        
+        /* Job Card Custom Styling */
         .job-card {
-            background-color: #27272A;
-            border: 1px solid #3F3F46;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 15px;
+            background-color: #27272A !important;
+            border: 1px solid #3F3F46 !important;
+            border-radius: 10px !important;
+            padding: 20px !important;
+            margin-bottom: 15px !important;
         }
 
         .location-tag {
-            background-color: #3F3F46;
-            color: #E7E5E4;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 500;
+            background-color: #3F3F46 !important;
+            color: #F5F5F4 !important;
+            padding: 3px 8px !important;
+            border-radius: 4px !important;
+            font-size: 0.82rem !important;
+            font-weight: 600 !important;
         }
         </style>
         """,
