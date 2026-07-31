@@ -40,6 +40,34 @@
 
 ---
 
+## Step-by-Step Guide: How to Automate and Receive Daily Email Reports
+
+Follow these steps to configure real email delivery so you receive daily PDF and CSV summary reports directly in your inbox:
+
+### Step 1: Generate a Gmail App Password (for Gmail Users)
+1. Navigate to Google Account Security: `https://myaccount.google.com/security`.
+2. Ensure **2-Step Verification** is turned ON.
+3. Search for **App Passwords** in the top search bar.
+4. Select **Create App Password**, enter `CareerPilot` as the app name, and click **Create**.
+5. Copy the generated **16-character passcode** (e.g. `abcd efgh ijkl mnop`).
+
+### Step 2: Configure Credentials in CareerPilot UI
+1. Launch the app in your browser at `http://localhost:8501`.
+2. Navigate to the **Settings** tab in the sidebar.
+3. Fill in your details:
+   - **User Email for Reports**: `your_email@gmail.com`
+   - **SMTP Server**: `smtp.gmail.com` (or `smtp.office365.com` for Outlook)
+   - **SMTP Port**: `587`
+   - **SMTP Username**: `your_email@gmail.com`
+   - **SMTP Password**: Paste your **16-character App Password** from Step 1.
+4. Click **Save Settings**.
+
+### Step 3: Test Email Dispatch & Enable Scheduler
+1. Go to the **Overview** tab and click **Dispatch Daily Email Report** to receive a test email immediately in your inbox.
+2. Go to the **Voice & Automation** tab and ensure **Background Automation Status** is set to `Running`. CareerPilot will automatically dispatch your PDF report every evening at 18:00.
+
+---
+
 ## Frequently Asked Questions
 
 ### 1. Does it work in real time?
@@ -57,21 +85,6 @@ The application implements a 3-Tier Geographic Hierarchy:
 - **Layer 3 (Work Scope)**: Filters by work arrangement (**Remote Only**, **Hybrid**, **On-site**, **All Work Types**).
 
 Selecting a State automatically locks valid Cities; selecting a City automatically locks its State.
-
----
-
-### 3. How to automate Email Reports & Background Tasks?
-CareerPilot includes an embedded background thread managed by `scheduler.py` using Python's `schedule` library:
-
-1. **Daily Auto-Scraping**: Runs every morning at **08:00**.
-2. **Daily PDF Email Dispatch**: Runs every evening at **18:00**. Generates a professional PDF report (via ReportLab) and CSV export, attaching both to an HTML email dispatched via SMTP (`smtplib`).
-3. **Resume Backup**: Runs at **00:00** creating a ZIP archive of all stored resumes in `exports/`.
-
-#### Setting Up Email Notifications:
-1. Open the **Settings** tab in the Streamlit UI.
-2. Enter your email address.
-3. Configure your SMTP Server (e.g., `smtp.gmail.com`), Port (`587`), Username, and App Password.
-4. Click **Save Settings**.
 
 ---
 

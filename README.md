@@ -33,6 +33,34 @@
 
 ---
 
+## Step-by-Step Guide: How to Automate and Receive Daily Email Reports
+
+Follow these steps to configure real email delivery so you receive daily PDF and CSV summary reports directly in your inbox:
+
+### Step 1: Generate a Gmail App Password (for Gmail Users)
+1. Navigate to Google Account Security: `https://myaccount.google.com/security`.
+2. Ensure **2-Step Verification** is turned ON.
+3. Search for **App Passwords** in the top search bar.
+4. Select **Create App Password**, enter `CareerPilot` as the app name, and click **Create**.
+5. Copy the generated **16-character passcode** (e.g. `abcd efgh ijkl mnop`).
+
+### Step 2: Configure Credentials in CareerPilot UI
+1. Launch the app in your browser at `http://localhost:8501`.
+2. Navigate to the **Settings** tab in the sidebar.
+3. Fill in your details:
+   - **User Email for Reports**: `your_email@gmail.com`
+   - **SMTP Server**: `smtp.gmail.com` (or `smtp.office365.com` for Outlook)
+   - **SMTP Port**: `587`
+   - **SMTP Username**: `your_email@gmail.com`
+   - **SMTP Password**: Paste your **16-character App Password** from Step 1.
+4. Click **Save Settings**.
+
+### Step 3: Test Email Dispatch & Enable Scheduler
+1. Go to the **Overview** tab and click **Dispatch Daily Email Report** to receive a test email immediately in your inbox.
+2. Go to the **Voice & Automation** tab and ensure **Background Automation Status** is set to `Running`. CareerPilot will automatically dispatch your PDF report every evening at 18:00.
+
+---
+
 ## Documentation & Architecture
 
 For a detailed explanation of system architecture, real-time data flows, location layering logic, and automation setup, see [PROJECT_ARCHITECTURE_AND_WORKING.md](file:///c:/Users/26050055/Desktop/UI/CareerPilot/PROJECT_ARCHITECTURE_AND_WORKING.md).
