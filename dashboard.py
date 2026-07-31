@@ -1,6 +1,6 @@
 """
 CareerPilot AI - Modern Streamlit Dashboard UI Component
-Contains custom natural & classy CSS theme, multi-layer location filters, interactive charts, and forms.
+Contains custom natural & classy CSS theme, cascading/locked location filters, interactive charts, and forms.
 """
 
 import streamlit as st
@@ -22,6 +22,26 @@ from utils import (
     export_jobs_to_json,
     export_jobs_to_pdf,
 )
+
+# Cascading City/State Location Hierarchy Mappings
+STATE_CITY_MAP = {
+    "All States": ["All Cities", "Bhopal", "Indore", "Bangalore", "Mumbai", "Pune", "Delhi NCR", "Remote"],
+    "Madhya Pradesh": ["All Cities", "Bhopal", "Indore"],
+    "Karnataka": ["All Cities", "Bangalore"],
+    "Maharashtra": ["All Cities", "Mumbai", "Pune"],
+    "Delhi": ["All Cities", "Delhi NCR"],
+    "Remote": ["All Cities", "Remote"],
+}
+
+CITY_STATE_MAP = {
+    "Bhopal": "Madhya Pradesh",
+    "Indore": "Madhya Pradesh",
+    "Bangalore": "Karnataka",
+    "Mumbai": "Maharashtra",
+    "Pune": "Maharashtra",
+    "Delhi NCR": "Delhi",
+    "Remote": "Remote",
+}
 
 
 def apply_custom_css():
@@ -187,34 +207,75 @@ def render_overview_tab():
 
 
 def render_job_listings_tab():
-    """Render 🔍 Job Listings Page with search and multi-layer location filters (City -> State -> Scope)."""
-    st.header("🔍 Job Search & Location Filters")
-    st.caption("Hierarchical location filtering (Bhopal -> MP -> National/Remote) and 1-click tracking.")
+    """Render 🔍 Job Listings Page with search and locked cascading location filters (State <-> City)."""
+    st.header("🔍 Job Search & Locked Location Filters")
+    st.caption("Cascading location controls: Selecting a State locks valid Cities; selecting a City locks its State.")
 
-    # Multi-Layer Location Filter Bar
-    with st.expander("🌐 Hierarchical Location & Search Filters", expanded=True):
+    # Initialize Session State for Cascading Dropdowns if not present
+    if "selected_state" not in st.session_state:
+        st.session_state["selected_state"] = "All States"
+    if "selected_city" not in st.session_state:
+        st.session_state["selected_city"] = "All Cities"
+
+    # Multi-Layer Location Filter Bar with Cascading Locks
+    with st.expander("🌐 Cascading Location & Search Filters", expanded=True):
         f_col1, f_col2, f_col3, f_col4, f_col5 = st.columns(5)
+        
         with f_col1:
             search_query = st.text_input("Keywords", placeholder="e.g. Python, AI, Developer")
+
         with f_col2:
-            city_filter = st.selectbox("Layer 1: City / Local", ["All Cities", "Bhopal", "Indore", "Bangalore", "Mumbai", "Pune", "Delhi NCR", "Remote"])
+            states_list = list(STATE_CITY_MAP.keys())
+            state_idx = states_list.index(st.session_state["selected_state"]) if st.session_state["selected_state"] in states_list else 0
+            
+            chosen_state = st.selectbox(
+                "Layer 1: State / Region",
+                states_list,
+                index=state_idx,
+                key="state_selector"
+            )
+            if chosen_state != st.session_state["selected_state"]:
+                st.session_state["selected_state"] = chosen_state
+                st.session_state["selected_city"] = "All Cities"  # Reset city on state change
+                st.rerun()
+
         with f_col3:
-            state_filter = st.selectbox("Layer 2: State / Region", ["All States", "Madhya Pradesh", "Karnataka", "Maharashtra", "Delhi", "Remote"])
+            # Cities locked to selected state
+            valid_cities = STATE_CITY_MAP.get(st.session_state["selected_state"], ["All Cities"])
+            city_idx = valid_cities.index(st.session_state["selected_city"]) if st.session_state["selected_city"] in valid_cities else 0
+            
+            chosen_city = st.selectbox(
+                "Layer 2: City / Local (Locked)",
+                valid_cities,
+                index=city_idx,
+                key="city_selector"
+            )
+            if chosen_city != st.session_state["selected_city"]:
+                st.session_state["selected_city"] = chosen_city
+                # Automatically lock state if a specific city is selected
+                if chosen_city in CITY_STATE_MAP:
+                    st.session_state["selected_state"] = CITY_STATE_MAP[chosen_city]
+                st.rerun()
+
         with f_col4:
             scope_filter = st.selectbox("Layer 3: Scope", ["All Work Types", "Remote Only", "Hybrid", "On-site"])
+        
         with f_col5:
             run_scraper = st.button("Scrape Jobs")
 
+    active_city = st.session_state["selected_city"]
+    active_state = st.session_state["selected_state"]
+
     if run_scraper:
-        with st.spinner("Scraping job portals with location filters..."):
+        with st.spinner(f"Scraping job portals for {active_city} ({active_state})..."):
             kws = [search_query] if search_query else None
             is_rem = scope_filter == "Remote Only"
             is_hyb = scope_filter == "Hybrid"
             saved = job_scraper.run_scraping_cycle(
                 is_remote=is_rem,
                 is_hybrid=is_hyb,
-                city=None if city_filter == "All Cities" else city_filter,
-                state=None if state_filter == "All States" else state_filter,
+                city=None if active_city == "All Cities" else active_city,
+                state=None if active_state == "All States" else active_state,
                 keywords=kws
             )
             st.success(f"Saved {saved} new matching jobs to database.")
@@ -230,25 +291,35 @@ def render_job_listings_tab():
                 | (Job.description.ilike(f"%{search_query}%"))
                 | (Job.skills.ilike(f"%{search_query}%"))
             )
-        if city_filter != "All Cities":
+        
+        if active_city != "All Cities":
             query = query.filter(
-                (Job.city.ilike(f"%{city_filter}%"))
-                | (Job.location.ilike(f"%{city_filter}%"))
-                | (Job.description.ilike(f"%{city_filter}%"))
+                (Job.city.ilike(f"%{active_city}%"))
+                | (Job.location.ilike(f"%{active_city}%"))
+                | (Job.description.ilike(f"%{active_city}%"))
             )
-        if state_filter != "All States":
+            
+        if active_state != "All States":
             query = query.filter(
-                (Job.state.ilike(f"%{state_filter}%"))
-                | (Job.location.ilike(f"%{state_filter}%"))
-                | (Job.description.ilike(f"%{state_filter}%"))
+                (Job.state.ilike(f"%{active_state}%"))
+                | (Job.location.ilike(f"%{active_state}%"))
+                | (Job.description.ilike(f"%{active_state}%"))
             )
+
         if scope_filter == "Remote Only":
             query = query.filter(Job.location.ilike("%Remote%"))
         elif scope_filter == "Hybrid":
             query = query.filter(Job.location.ilike("%Hybrid%"))
 
         jobs = query.order_by(Job.id.desc()).all()
-        st.write(f"Showing **{len(jobs)}** matching job opportunities:")
+
+        # If 0 jobs found for a specific city filter, trigger automatic scraper generation!
+        if len(jobs) == 0 and active_city != "All Cities":
+            st.info(f"No jobs found in local cache for {active_city}. Running live scraper for {active_city}...")
+            job_scraper.run_scraping_cycle(city=active_city, state=active_state)
+            jobs = query.order_by(Job.id.desc()).all()
+
+        st.write(f"Showing **{len(jobs)}** matching job opportunities for **{active_city} ({active_state})**:")
 
         # Export Controls
         exp_col1, exp_col2, exp_col3, exp_col4 = st.columns(4)

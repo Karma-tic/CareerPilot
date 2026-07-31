@@ -5,7 +5,7 @@ Handles SQLite connection, session management, and sample data seeding.
 
 from datetime import datetime, timedelta
 import random
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text, inspect
 from sqlalchemy.orm import sessionmaker, scoped_session
 from config import DATABASE_URL, logger
 from models import Base, Job, Application, Resume, Settings
@@ -31,7 +31,6 @@ class DatabaseManager:
             
             # Migration check for new city & state columns on existing DB
             with self.engine.connect() as conn:
-                from sqlalchemy import inspect, text
                 inspector = inspect(self.engine)
                 if "jobs" in inspector.get_table_names():
                     columns = [c["name"] for c in inspector.get_columns("jobs")]
@@ -51,7 +50,7 @@ class DatabaseManager:
         return self.Session()
 
     def seed_sample_data(self):
-        """Seed realistic sample data into the database if empty."""
+        """Seed realistic sample data into the database if empty or if city jobs are missing."""
         session = self.get_session()
         try:
             # Check if settings exist
@@ -88,8 +87,9 @@ class DatabaseManager:
                 session.add(sample_resume)
                 logger.info("Seeded sample resume.")
 
-            # Check if jobs exist
-            if session.query(Job).count() == 0:
+            # Always ensure Bhopal and Indore city jobs exist in the database!
+            bhopal_count = session.query(Job).filter(Job.city == "Bhopal").count()
+            if bhopal_count == 0:
                 sample_jobs = [
                     # Bhopal, MP Jobs
                     {
@@ -180,20 +180,6 @@ class DatabaseManager:
                         "source": "TechInAsia",
                         "skills": "Python, AWS, PyTorch, Scikit-Learn, Docker, Kubernetes",
                     },
-                    {
-                        "company": "Silicon Valley India",
-                        "title": "FastAPI Backend Specialist",
-                        "salary": "₹20,00,000 - ₹28,00,000",
-                        "location": "Bangalore, Karnataka",
-                        "city": "Bangalore",
-                        "state": "Karnataka",
-                        "experience": "Mid-Senior Level",
-                        "description": "Build high-speed microservices using FastAPI, Redis, and PostgreSQL in Bangalore tech corridor.",
-                        "url": "https://siliconindia.example.com/jobs/fastapi",
-                        "date_posted": "2026-07-31",
-                        "source": "LinkedIn India",
-                        "skills": "Python, FastAPI, PostgreSQL, Redis, Docker",
-                    },
 
                     # Mumbai Jobs
                     {
@@ -210,59 +196,32 @@ class DatabaseManager:
                         "source": "Naukri",
                         "skills": "Python, C++, NumPy, Pandas, SQL, System Design",
                     },
-
-                    # Remote Jobs
-                    {
-                        "company": "OpenAI Partner Tech",
-                        "title": "Lead LLM & Python Developer",
-                        "salary": "$160,000 - $190,000",
-                        "location": "Remote (India / Global)",
-                        "city": "Remote",
-                        "state": "Remote",
-                        "experience": "Senior Level (5+ yrs)",
-                        "description": "Remote LLM development position designing enterprise AI workflows and microservices.",
-                        "url": "https://openaipartner.example.com/job/201",
-                        "date_posted": "2026-07-28",
-                        "source": "RemoteOK",
-                        "skills": "Python, OpenAI API, LangChain, PyTorch, Docker",
-                    },
-                    {
-                        "company": "Global Automation Inc",
-                        "title": "Remote Python Automation Engineer",
-                        "salary": "$120,000 - $150,000",
-                        "location": "Remote",
-                        "city": "Remote",
-                        "state": "Remote",
-                        "experience": "Mid Level",
-                        "description": "Full remote role building automated web scraping, API testing, and browser automation tools with Playwright.",
-                        "url": "https://globalauto.example.com/jobs/remote-auto",
-                        "date_posted": "2026-07-31",
-                        "source": "WeWorkRemotely",
-                        "skills": "Python, Playwright, AsyncIO, Docker, Scraping",
-                    },
                 ]
 
                 job_objects = []
                 for j in sample_jobs:
-                    job_obj = Job(
-                        company=j["company"],
-                        title=j["title"],
-                        salary=j["salary"],
-                        location=j["location"],
-                        city=j["city"],
-                        state=j["state"],
-                        experience=j["experience"],
-                        description=j["description"],
-                        url=j["url"],
-                        date_posted=j["date_posted"],
-                        source=j["source"],
-                        skills=j["skills"],
-                    )
-                    job_objects.append(job_obj)
+                    existing = session.query(Job).filter(Job.url == j["url"]).first()
+                    if not existing:
+                        job_obj = Job(
+                            company=j["company"],
+                            title=j["title"],
+                            salary=j["salary"],
+                            location=j["location"],
+                            city=j["city"],
+                            state=j["state"],
+                            experience=j["experience"],
+                            description=j["description"],
+                            url=j["url"],
+                            date_posted=j["date_posted"],
+                            source=j["source"],
+                            skills=j["skills"],
+                        )
+                        job_objects.append(job_obj)
 
-                session.add_all(job_objects)
-                session.commit()
-                logger.info(f"Seeded {len(job_objects)} sample jobs.")
+                if job_objects:
+                    session.add_all(job_objects)
+                    session.commit()
+                    logger.info(f"Seeded {len(job_objects)} city jobs.")
 
                 # Seed sample applications linked to jobs
                 added_jobs = session.query(Job).all()
@@ -274,21 +233,23 @@ class DatabaseManager:
                 ]
 
                 for i, job_item in enumerate(added_jobs[:3]):
-                    status = statuses[i % len(statuses)]
-                    interview_date = (
-                        datetime.now() + timedelta(days=random.randint(1, 7))
-                        if status == "Interview"
-                        else None
-                    )
-                    app = Application(
-                        job_id=job_item.id,
-                        applied_date=datetime.now()
-                        - timedelta(days=random.randint(2, 10)),
-                        status=status,
-                        interview_date=interview_date,
-                        notes=notes_list[i % len(notes_list)],
-                    )
-                    session.add(app)
+                    existing_app = session.query(Application).filter(Application.job_id == job_item.id).first()
+                    if not existing_app:
+                        status = statuses[i % len(statuses)]
+                        interview_date = (
+                            datetime.now() + timedelta(days=random.randint(1, 7))
+                            if status == "Interview"
+                            else None
+                        )
+                        app = Application(
+                            job_id=job_item.id,
+                            applied_date=datetime.now()
+                            - timedelta(days=random.randint(2, 10)),
+                            status=status,
+                            interview_date=interview_date,
+                            notes=notes_list[i % len(notes_list)],
+                        )
+                        session.add(app)
 
                 session.commit()
                 logger.info("Seeded sample job applications.")
