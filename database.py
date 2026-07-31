@@ -83,17 +83,6 @@ class DatabaseManager:
                     
                     SUMMARY:
                     Senior Full-Stack & AI Engineer with 6+ years of experience designing scalable microservices, automated scraping pipelines, and LLM-powered applications using Python, Streamlit, PyTorch, and Docker.
-                    
-                    TECHNICAL SKILLS:
-                    Languages: Python, JavaScript, TypeScript, SQL, HTML/CSS
-                    Frameworks: FastAPI, Flask, Streamlit, PyTorch, React, Django
-                    AI & ML: OpenAI API, LangChain, Transformers, Scikit-Learn, Pandas, NumPy
-                    Database & Tools: PostgreSQL, SQLite, SQLAlchemy, Redis, Docker, Git, Linux, AWS, Playwright
-                    
-                    EXPERIENCE:
-                    Lead Python Engineer - MP Tech Innovations, Bhopal (2022 - Present)
-                    - Built automated data extraction scrapers processing 50,000+ records daily with Playwright & BeautifulSoup.
-                    - Developed internal AI analytics dashboard using Streamlit & Plotly, reducing reporting time by 40%.
                     """,
                 )
                 session.add(sample_resume)
@@ -102,20 +91,51 @@ class DatabaseManager:
             # Check if jobs exist
             if session.query(Job).count() == 0:
                 sample_jobs = [
+                    # Bhopal, MP Jobs
                     {
-                        "company": "Bhopal Smart Tech Systems",
+                        "company": "MP Smart Infra & Tech",
                         "title": "Senior Python & AI Architect",
                         "salary": "₹18,00,000 - ₹24,00,000",
                         "location": "Bhopal, Madhya Pradesh",
                         "city": "Bhopal",
                         "state": "Madhya Pradesh",
                         "experience": "Senior Level (5+ yrs)",
-                        "description": "Leading tech hub in Bhopal seeking a Senior Python Architect to build AI applications, FastAPI services, and data pipelines.",
+                        "description": "Leading tech innovation firm in Bhopal IT Park seeking a Senior Python Architect to build LLM applications, FastAPI backend services, and automated data pipelines.",
                         "url": "https://bhopaltech.example.com/job/101",
                         "date_posted": "2026-07-29",
-                        "source": "Local Portal",
+                        "source": "MP Tech Hub Portal",
                         "skills": "Python, OpenAI API, FastAPI, Streamlit, PostgreSQL, Docker",
                     },
+                    {
+                        "company": "Bhopal Cyber & Data Labs",
+                        "title": "Python Automation & Scraper Engineer",
+                        "salary": "₹12,00,000 - ₹16,00,000",
+                        "location": "Bhopal, Madhya Pradesh",
+                        "city": "Bhopal",
+                        "state": "Madhya Pradesh",
+                        "experience": "Mid Level (3+ yrs)",
+                        "description": "Develop high-throughput web scrapers, browser automation with Playwright, and ETL pipelines in Bhopal, MP.",
+                        "url": "https://bhopalcyber.example.com/jobs/automation",
+                        "date_posted": "2026-07-31",
+                        "source": "Bhopal Careers",
+                        "skills": "Python, Playwright, BeautifulSoup, Scraping, Redis, SQL",
+                    },
+                    {
+                        "company": "VNS Tech Solutions",
+                        "title": "Junior Python Developer",
+                        "salary": "₹6,00,000 - ₹9,00,000",
+                        "location": "Bhopal, Madhya Pradesh",
+                        "city": "Bhopal",
+                        "state": "Madhya Pradesh",
+                        "experience": "Entry Level (1-2 yrs)",
+                        "description": "Python web developer role in Bhopal working with Flask, SQLite, HTML/CSS, and REST APIs.",
+                        "url": "https://vnstech.example.com/jobs/jr-python",
+                        "date_posted": "2026-07-30",
+                        "source": "Bhopal Careers",
+                        "skills": "Python, Flask, SQL, HTML/CSS, Git",
+                    },
+
+                    # Indore, MP Jobs
                     {
                         "company": "Indore Software Labs",
                         "title": "Full-Stack Python & Streamlit Engineer",
@@ -124,26 +144,74 @@ class DatabaseManager:
                         "city": "Indore",
                         "state": "Madhya Pradesh",
                         "experience": "Mid-Senior Level",
-                        "description": "Develop high-throughput web tools, analytical dashboards, and automation suites using Python and Streamlit in Indore IT Park.",
+                        "description": "Develop analytical dashboards, machine learning tools, and automated workflows using Streamlit and Pandas in Crystal IT Park, Indore.",
                         "url": "https://indorelabs.example.com/careers/fs-python",
                         "date_posted": "2026-07-30",
                         "source": "MP Job Portal",
                         "skills": "Python, Streamlit, Pandas, Plotly, SQLite, Git",
                     },
                     {
-                        "company": "MP Digital Solutions",
-                        "title": "Backend Web Scraping & Playwright Engineer",
-                        "salary": "₹12,00,000 - ₹16,00,000",
-                        "location": "Bhopal, Madhya Pradesh",
-                        "city": "Bhopal",
+                        "company": "Malwa Analytics Indore",
+                        "title": "Data Scientist & Predictive Modeler",
+                        "salary": "₹15,00,000 - ₹20,00,000",
+                        "location": "Indore, Madhya Pradesh",
+                        "city": "Indore",
                         "state": "Madhya Pradesh",
-                        "experience": "Mid Level (3+ yrs)",
-                        "description": "Build automated web scrapers, browser automation tools, and data pipelines using Python and Playwright in Bhopal.",
-                        "url": "https://mpdigital.example.com/jobs/automation",
-                        "date_posted": "2026-07-31",
-                        "source": "Scraper",
-                        "skills": "Python, Playwright, BeautifulSoup, Scraping, Redis",
+                        "experience": "Mid Level",
+                        "description": "Analyze large enterprise datasets and build machine learning predictive models in Indore.",
+                        "url": "https://malwaanalytics.example.com/jobs/ds",
+                        "date_posted": "2026-07-28",
+                        "source": "MP Job Portal",
+                        "skills": "Python, Data Science, Pandas, Scikit-Learn, Plotly",
                     },
+
+                    # Bangalore Jobs
+                    {
+                        "company": "Bangalore Cloud Analytics",
+                        "title": "Senior Data & ML Engineer",
+                        "salary": "₹25,00,000 - ₹35,00,000",
+                        "location": "Bangalore, Karnataka",
+                        "city": "Bangalore",
+                        "state": "Karnataka",
+                        "experience": "Senior (6+ yrs)",
+                        "description": "Cloud data architecture and model deployment infrastructure engineer on AWS in Bangalore.",
+                        "url": "https://bangalorecloud.example.com/jobs/ml-sr",
+                        "date_posted": "2026-07-27",
+                        "source": "TechInAsia",
+                        "skills": "Python, AWS, PyTorch, Scikit-Learn, Docker, Kubernetes",
+                    },
+                    {
+                        "company": "Silicon Valley India",
+                        "title": "FastAPI Backend Specialist",
+                        "salary": "₹20,00,000 - ₹28,00,000",
+                        "location": "Bangalore, Karnataka",
+                        "city": "Bangalore",
+                        "state": "Karnataka",
+                        "experience": "Mid-Senior Level",
+                        "description": "Build high-speed microservices using FastAPI, Redis, and PostgreSQL in Bangalore tech corridor.",
+                        "url": "https://siliconindia.example.com/jobs/fastapi",
+                        "date_posted": "2026-07-31",
+                        "source": "LinkedIn India",
+                        "skills": "Python, FastAPI, PostgreSQL, Redis, Docker",
+                    },
+
+                    # Mumbai Jobs
+                    {
+                        "company": "Mumbai Quant Tech",
+                        "title": "Python Quantitative Software Engineer",
+                        "salary": "₹22,00,000 - ₹30,00,000",
+                        "location": "Mumbai, Maharashtra",
+                        "city": "Mumbai",
+                        "state": "Maharashtra",
+                        "experience": "Senior Level",
+                        "description": "Develop high-frequency trading tools, quantitative analytical software, and risk engines in BKC, Mumbai.",
+                        "url": "https://mumbaiquant.example.com/jobs/quant-dev",
+                        "date_posted": "2026-07-30",
+                        "source": "Naukri",
+                        "skills": "Python, C++, NumPy, Pandas, SQL, System Design",
+                    },
+
+                    # Remote Jobs
                     {
                         "company": "OpenAI Partner Tech",
                         "title": "Lead LLM & Python Developer",
@@ -159,18 +227,18 @@ class DatabaseManager:
                         "skills": "Python, OpenAI API, LangChain, PyTorch, Docker",
                     },
                     {
-                        "company": "Bangalore Cloud Analytics",
-                        "title": "Senior Data & ML Engineer",
-                        "salary": "₹25,00,000 - ₹35,00,000",
-                        "location": "Bangalore, Karnataka",
-                        "city": "Bangalore",
-                        "state": "Karnataka",
-                        "experience": "Senior (6+ yrs)",
-                        "description": "Cloud data architecture and model deployment infrastructure engineer on AWS in Bangalore.",
-                        "url": "https://bangalorecloud.example.com/jobs/ml-sr",
-                        "date_posted": "2026-07-27",
-                        "source": "Indeed",
-                        "skills": "Python, AWS, PyTorch, Scikit-Learn, Docker, Kubernetes",
+                        "company": "Global Automation Inc",
+                        "title": "Remote Python Automation Engineer",
+                        "salary": "$120,000 - $150,000",
+                        "location": "Remote",
+                        "city": "Remote",
+                        "state": "Remote",
+                        "experience": "Mid Level",
+                        "description": "Full remote role building automated web scraping, API testing, and browser automation tools with Playwright.",
+                        "url": "https://globalauto.example.com/jobs/remote-auto",
+                        "date_posted": "2026-07-31",
+                        "source": "WeWorkRemotely",
+                        "skills": "Python, Playwright, AsyncIO, Docker, Scraping",
                     },
                 ]
 

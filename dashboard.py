@@ -231,9 +231,17 @@ def render_job_listings_tab():
                 | (Job.skills.ilike(f"%{search_query}%"))
             )
         if city_filter != "All Cities":
-            query = query.filter(Job.city.ilike(f"%{city_filter}%"))
+            query = query.filter(
+                (Job.city.ilike(f"%{city_filter}%"))
+                | (Job.location.ilike(f"%{city_filter}%"))
+                | (Job.description.ilike(f"%{city_filter}%"))
+            )
         if state_filter != "All States":
-            query = query.filter(Job.state.ilike(f"%{state_filter}%"))
+            query = query.filter(
+                (Job.state.ilike(f"%{state_filter}%"))
+                | (Job.location.ilike(f"%{state_filter}%"))
+                | (Job.description.ilike(f"%{state_filter}%"))
+            )
         if scope_filter == "Remote Only":
             query = query.filter(Job.location.ilike("%Remote%"))
         elif scope_filter == "Hybrid":
