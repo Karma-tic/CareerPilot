@@ -4,42 +4,42 @@
 
 ---
 
-## 🌟 Key Features
+## Key Features
 
-1. **🕵️ Multi-Source Job Scraper with Location Hierarchy**
-   - Scrapes public tech feeds (RemoteOK, WeWorkRemotely, RSS feeds).
+1. **Multi-Source Job Scraper with Location Hierarchy**
+   - Scrapes public tech feeds (Remotive API, RemoteOK API, WeWorkRemotely RSS feeds).
    - Multi-Layer location tagging: **Layer 1: City (Bhopal, Indore, etc.)**, **Layer 2: State (Madhya Pradesh, etc.)**, **Layer 3: Scope (Remote/Hybrid/On-site)**.
    - Saves deduplicated listings directly into SQLite database.
 
-2. **💼 Authentic & Natural Streamlit Interface**
+2. **Authentic Light Cream & Royal Purple Streamlit Interface**
    - **Overview**: Executive metrics, recent job table, status count cards, quick actions.
-   - **Job Listings**: Filter bar (City, State, Work Scope, Keywords), 1-click application tracking, AI job description summarization.
+   - **Job Listings**: Locked location filters (City, State, Work Scope, Keywords), 1-click application tracking, AI job description summarization.
    - **Application Tracker**: Pipeline tracking for Applied, Interview, Rejected, Offer, Accepted with note editing and interview calendar reminders.
    - **Analytics & Predictions**: Plotly charts (applications over time, salary distributions, skills frequency, top hiring companies, interview ratios, and predictive skill trends).
    - **AI Resume Matcher**: Upload resume, calculate Match %, analyze missing vs matched skills, receive actionable recommendations, and generate tailored cover letters.
    - **Voice & Automation**: Voice command execution, microphone testing, background scheduler controls.
    - **Settings**: Email, SMTP config, OpenAI API keys, voice wake words, and database settings.
 
-3. **🎙️ Voice Assistant**
+3. **Voice Assistant**
    - Wake Word: `CareerPilot`
    - Voice Commands supported: *"Search Python jobs"*, *"Search remote AI jobs"*, *"Email report"*, *"Read today's summary"*, *"Open resume"*, *"Show dashboard"*.
 
-4. **📧 Automated Email Reporting & Background Scheduler**
+4. **Automated Email Reporting & Background Scheduler**
    - Daily PDF summary reports (generated with ReportLab) and CSV attachments.
    - Dispatches via SMTP every evening at 18:00 automatically.
 
-5. **📥 Multi-Format Exporters**
+5. **Multi-Format Exporters**
    - Export job listings and application tables into **CSV**, **Excel (.xlsx)**, **PDF**, and **JSON**.
 
 ---
 
-## 📘 Documentation & Architecture
+## Documentation & Architecture
 
 For a detailed explanation of system architecture, real-time data flows, location layering logic, and automation setup, see [PROJECT_ARCHITECTURE_AND_WORKING.md](file:///c:/Users/26050055/Desktop/UI/CareerPilot/PROJECT_ARCHITECTURE_AND_WORKING.md).
 
 ---
 
-## 🚀 Quick Setup & Run Instructions
+## Quick Setup & Run Instructions
 
 ```bash
 # 1. Open project directory
@@ -54,7 +54,7 @@ streamlit run app.py
 
 ---
 
-## 🧪 Testing
+## Testing
 
 ```bash
 # Run Pytest unit test suite

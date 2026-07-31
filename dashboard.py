@@ -152,8 +152,8 @@ def apply_custom_css():
 
 
 def render_overview_tab():
-    """Render 📊 Overview Page."""
-    st.header("📊 Executive Job Search Dashboard")
+    """Render Overview Page."""
+    st.header("Executive Job Search Dashboard")
     st.caption("Authentic tracking of job search activity, application pipeline status, and daily automation.")
 
     session = db_manager.get_session()
@@ -171,23 +171,23 @@ def render_overview_tab():
 
         st.divider()
 
-        st.subheader("⚡ Quick Actions & Automation")
+        st.subheader("Quick Actions & Automation")
         qa_col1, qa_col2, qa_col3 = st.columns(3)
         with qa_col1:
-            if st.button("🔄 Run Live Job Scraper", use_container_width=True):
+            if st.button("Run Live Job Scraper", use_container_width=True):
                 with st.spinner("Scraping active job portals..."):
                     new_count = job_scraper.run_scraping_cycle(is_remote=True)
                     st.success(f"Scraped and saved {new_count} new job listings!")
                     st.rerun()
 
         with qa_col2:
-            if st.button("📧 Dispatch Daily Email Report", use_container_width=True):
+            if st.button("Dispatch Daily Email Report", use_container_width=True):
                 with st.spinner("Generating PDF & dispatching report..."):
                     email_bot.send_daily_email()
                     st.success("Daily report PDF & CSV generated and sent!")
 
         with qa_col3:
-            if st.button("🎙️ Trigger Voice Assistant", use_container_width=True):
+            if st.button("Trigger Voice Assistant", use_container_width=True):
                 st.info("Listening... Speak your command now (e.g. 'Search Python jobs').")
                 voice_res = voice_assistant.listen_command()
                 if voice_res:
@@ -197,7 +197,7 @@ def render_overview_tab():
         st.divider()
 
         # Recent Jobs Table
-        st.subheader("📋 Recent Job Postings")
+        st.subheader("Recent Job Postings")
         df_jobs = analytics_engine.get_jobs_dataframe()
         if not df_jobs.empty:
             display_cols = ["company", "title", "salary", "city", "state", "source", "date_posted"]
@@ -215,8 +215,8 @@ def render_overview_tab():
 
 
 def render_job_listings_tab():
-    """Render 🔍 Job Listings Page with search and locked cascading location filters (State <-> City)."""
-    st.header("🔍 Job Search & Location Filters")
+    """Render Job Listings Page with search and locked cascading location filters (State <-> City)."""
+    st.header("Job Search & Location Filters")
     st.caption("Cascading location controls: Selecting a State locks valid Cities; selecting a City locks its State.")
 
     # Initialize Session State for Cascading Dropdowns if not present
@@ -226,7 +226,7 @@ def render_job_listings_tab():
         st.session_state["selected_city"] = "All Cities"
 
     # Multi-Layer Location Filter Bar with Cascading Locks
-    with st.expander("🌐 Cascading Location & Search Filters", expanded=True):
+    with st.expander("Cascading Location & Search Filters", expanded=True):
         f_col1, f_col2, f_col3, f_col4, f_col5 = st.columns(5)
         
         with f_col1:
@@ -325,19 +325,19 @@ def render_job_listings_tab():
         jobs_dicts = [j.to_dict() for j in jobs]
         
         with exp_col1:
-            if st.button("📥 Export CSV"):
+            if st.button("Export CSV"):
                 path = export_jobs_to_csv(jobs_dicts)
                 st.success(f"Exported: {path}")
         with exp_col2:
-            if st.button("📥 Export Excel"):
+            if st.button("Export Excel"):
                 path = export_jobs_to_excel(jobs_dicts)
                 st.success(f"Exported: {path}")
         with exp_col3:
-            if st.button("📥 Export PDF"):
+            if st.button("Export PDF"):
                 path = export_jobs_to_pdf(jobs_dicts)
                 st.success(f"Exported: {path}")
         with exp_col4:
-            if st.button("📥 Export JSON"):
+            if st.button("Export JSON"):
                 path = export_jobs_to_json(jobs_dicts)
                 st.success(f"Exported: {path}")
 
@@ -350,7 +350,7 @@ def render_job_listings_tab():
                     f"""
                     <div class="job-card">
                         <h3 style="color:#6D28D9; margin-bottom:5px; font-weight:700;">{j.title}</h3>
-                        <p style="color:#374151; font-size:1.0rem;"><strong>{j.company}</strong> • <span class="location-tag">📍 {j.city or 'Bhopal'}, {j.state or 'MP'}</span> • <span style="color:#D97706; font-weight:600;">{j.salary}</span></p>
+                        <p style="color:#374151; font-size:1.0rem;"><strong>{j.company}</strong> • <span class="location-tag">Location: {j.city or 'Bhopal'}, {j.state or 'MP'}</span> • <span style="color:#D97706; font-weight:600;">{j.salary}</span></p>
                         <p style="color:#4B5563; font-size:0.92rem; line-height:1.5;">{j.description[:280]}...</p>
                         <p style="color:#6B7280; font-size:0.85rem;"><strong>Required Skills:</strong> {j.skills or 'Python, Engineering'}</p>
                     </div>
@@ -386,8 +386,8 @@ def render_job_listings_tab():
 
 
 def render_applications_tab():
-    """Render 📝 Application Tracker Page."""
-    st.header("📝 Application Tracker Pipeline")
+    """Render Application Tracker Page."""
+    st.header("Application Tracker Pipeline")
     st.caption("Manage application statuses, track upcoming interview dates, and record notes.")
 
     session = db_manager.get_session()
@@ -407,7 +407,7 @@ def render_applications_tab():
 
         st.divider()
 
-        st.subheader("📋 Application Pipeline Details")
+        st.subheader("Application Pipeline Details")
         for app in apps:
             with st.expander(f"{app.job.company if app.job else 'Unknown'} — {app.job.title if app.job else 'Unknown'} [{app.status}]", expanded=False):
                 c1, c2 = st.columns(2)
@@ -441,8 +441,8 @@ def render_applications_tab():
 
 
 def render_analytics_tab():
-    """Render 📈 Analytics & Predictive Intelligence Page."""
-    st.header("📈 Analytics & Predictive Intelligence")
+    """Render Analytics & Predictive Intelligence Page."""
+    st.header("Analytics & Predictive Intelligence")
     st.caption("Visual insights on application trends, salary distributions, top skills, and predictive market trends.")
 
     df_jobs = analytics_engine.get_jobs_dataframe()
@@ -459,19 +459,19 @@ def render_analytics_tab():
 
     st.divider()
 
-    st.subheader("🔮 Predictive Skill & Market Trends")
+    st.subheader("Predictive Skill & Market Trends")
     predictions = analytics_engine.predict_valuable_skills()
     df_pred = pd.DataFrame(predictions)
     st.dataframe(df_pred, use_container_width=True, hide_index=True)
 
 
 def render_resume_match_tab():
-    """Render 🎯 AI Resume Matcher & Cover Letter Page."""
-    st.header("🎯 AI Resume Matcher & Cover Letter Generator")
+    """Render AI Resume Matcher & Cover Letter Page."""
+    st.header("AI Resume Matcher & Cover Letter Generator")
     st.caption("Upload your resume, compute match scores against target jobs, and generate tailored cover letters.")
 
     # Resume Upload Section
-    st.subheader("📄 Upload / Select Resume")
+    st.subheader("Upload / Select Resume")
     uploaded_file = st.file_uploader("Upload PDF, TXT, or Markdown Resume", type=["pdf", "txt", "md"])
     if uploaded_file:
         bytes_data = uploaded_file.read()
@@ -488,7 +488,7 @@ def render_resume_match_tab():
     st.divider()
 
     # Matcher Form
-    st.subheader("⚡ Compute Match Score")
+    st.subheader("Compute Match Score")
     session = db_manager.get_session()
     try:
         jobs = session.query(Job).all()
@@ -500,7 +500,7 @@ def render_resume_match_tab():
         selected_job_title = st.selectbox("Select Target Job", list(job_options.keys()))
         selected_job = job_options[selected_job_title]
 
-        if st.button("🎯 Calculate Match & Generate Recommendations"):
+        if st.button("Calculate Match & Generate Recommendations"):
             match_result = job_matcher.calculate_match(
                 resume_text=latest_resume.get("content_text", ""),
                 job_description=selected_job.description,
@@ -511,21 +511,21 @@ def render_resume_match_tab():
 
             m_col1, m_col2 = st.columns(2)
             with m_col1:
-                st.write("✅ **Matched Skills:**")
+                st.write("Matched Skills:")
                 st.write(", ".join(match_result["matched_skills"]) if match_result["matched_skills"] else "General Python skills matched.")
             with m_col2:
-                st.write("❌ **Missing Skills:**")
+                st.write("Missing Skills:")
                 st.write(", ".join(match_result["missing_skills"]) if match_result["missing_skills"] else "None! Excellent coverage.")
 
-            st.write("💡 **Improvement Suggestions:**")
+            st.write("Improvement Suggestions:")
             for sug in match_result["suggestions"]:
                 st.write(f"- {sug}")
 
         st.divider()
 
-        st.subheader("✍️ Tailored Cover Letter Generator")
+        st.subheader("Tailored Cover Letter Generator")
         applicant_name = st.text_input("Applicant Full Name", value="Alex Mercer")
-        if st.button("📝 Generate Customized Cover Letter"):
+        if st.button("Generate Customized Cover Letter"):
             letter = job_matcher.generate_cover_letter(
                 applicant_name=applicant_name,
                 company_name=selected_job.company,
@@ -540,13 +540,13 @@ def render_resume_match_tab():
 
 
 def render_voice_automation_tab():
-    """Render 🎙️ Voice Assistant & Automation Page."""
-    st.header("🎙️ Voice Commands & Automation Center")
+    """Render Voice Assistant & Automation Page."""
+    st.header("Voice Commands & Automation Center")
     st.caption("Interact with CareerPilot via speech, run background tasks, and trigger dispatches.")
 
     v_col1, v_col2 = st.columns(2)
     with v_col1:
-        st.subheader("🎙️ Voice Assistant Commands")
+        st.subheader("Voice Assistant Commands")
         st.write("Supported Voice & Text Commands:")
         st.markdown(
             """
@@ -561,11 +561,11 @@ def render_voice_automation_tab():
         cmd_input = st.text_input("Test Command via Text / Speech Input", placeholder="Type or click Listen...")
         c1, c2 = st.columns(2)
         with c1:
-            if st.button("▶️ Run Text Command"):
+            if st.button("Run Text Command"):
                 res = voice_assistant.execute_command(cmd_input)
                 st.success(res.get("response", "Executed"))
         with c2:
-            if st.button("🎤 Listen on Mic"):
+            if st.button("Listen on Mic"):
                 st.info("Listening on microphone for 5 seconds...")
                 speech_text = voice_assistant.listen_command()
                 if speech_text:
@@ -576,32 +576,32 @@ def render_voice_automation_tab():
                     st.warning("No microphone input detected.")
 
     with v_col2:
-        st.subheader("⚙️ Background Automation Status")
+        st.subheader("Background Automation Status")
         is_active = automation_scheduler.is_running
-        st.write(f"Scheduler Status: **{'🟢 Running' if is_active else '🔴 Stopped'}**")
+        st.write(f"Scheduler Status: **{'Running' if is_active else 'Stopped'}**")
 
         a1, a2 = st.columns(2)
         with a1:
-            if st.button("▶️ Start Background Scheduler"):
+            if st.button("Start Background Scheduler"):
                 automation_scheduler.start()
                 st.success("Scheduler started!")
                 st.rerun()
         with a2:
-            if st.button("⏹️ Stop Background Scheduler"):
+            if st.button("Stop Background Scheduler"):
                 automation_scheduler.stop()
                 st.warning("Scheduler stopped!")
                 st.rerun()
 
         st.divider()
 
-        if st.button("📦 Run Manual Resume Backup Now"):
+        if st.button("Run Manual Resume Backup Now"):
             automation_scheduler.daily_resume_backup_job()
             st.success("Resume ZIP archive backup completed!")
 
 
 def render_settings_tab():
-    """Render ⚙️ Settings Page."""
-    st.header("⚙️ Application Settings")
+    """Render Settings Page."""
+    st.header("Application Settings")
     st.caption("Configure notification emails, SMTP credentials, OpenAI API key, and system preferences.")
 
     session = db_manager.get_session()
@@ -614,17 +614,17 @@ def render_settings_tab():
             email = st.text_input("User Email for Reports", value=settings.email or "")
             openai_key = st.text_input("OpenAI API Key (Optional)", value=settings.openai_api_key or "", type="password")
             
-            st.subheader("📧 SMTP Settings (for Automated Emails)")
+            st.subheader("SMTP Settings (for Automated Emails)")
             smtp_server = st.text_input("SMTP Server", value=settings.smtp_server or "smtp.gmail.com")
             smtp_port = st.number_input("SMTP Port", value=int(settings.smtp_port or 587))
             smtp_user = st.text_input("SMTP Username", value=settings.smtp_username or "")
             smtp_pass = st.text_input("SMTP Password / App Password", value=settings.smtp_password or "", type="password")
             
-            st.subheader("🎙️ Voice & System Settings")
+            st.subheader("Voice & System Settings")
             wake_word = st.text_input("Voice Wake Word", value=settings.voice_wake_word or "CareerPilot")
             theme = st.selectbox("UI Theme", ["cream", "dark"], index=0)
 
-            submitted = st.form_submit_button("💾 Save Settings")
+            submitted = st.form_submit_button("Save Settings")
             if submitted:
                 settings.email = email
                 settings.openai_api_key = openai_key

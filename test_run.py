@@ -76,7 +76,7 @@ def run_full_verification():
         )
         print(f"  [OK] Cover Letter Generated ({len(cover_letter)} chars)")
 
-    # 4. Test Analytics & Chart Engines
+    # 4. Test Analytics & Plotly Visualizations...
     print("\n[4/6] Testing Analytics & Plotly Visualizations...")
     df_jobs = analytics_engine.get_jobs_dataframe()
     df_apps = analytics_engine.get_applications_dataframe()
