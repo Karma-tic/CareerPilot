@@ -43,9 +43,9 @@ apply_custom_css()
 # Sidebar Navigation Header
 st.sidebar.markdown(
     """
-    <div style="text-align: center; padding: 10px 0;">
-        <h1 style="color: #10B981; margin:0; font-size: 1.8rem; font-weight:700;">💼 CareerPilot</h1>
-        <p style="color: #A1A1AA; font-size: 0.85rem;">Job Search & Career Intelligence</p>
+    <div style="text-align: center; padding: 12px 0;">
+        <h1 style="color: #F5F3FF; margin:0; font-size: 1.8rem; font-weight:700;">💼 CareerPilot</h1>
+        <p style="color: #C4B5FD; font-size: 0.85rem;">Job Search & Executive Intelligence</p>
     </div>
     """,
     unsafe_allow_html=True,
@@ -69,7 +69,7 @@ menu_selection = st.sidebar.radio(
 )
 
 st.sidebar.divider()
-st.sidebar.caption("CareerPilot v1.0.0 | Authentic Edition")
+st.sidebar.caption("CareerPilot v1.0.0 | Light Cream Edition")
 
 # Tab Router
 if menu_selection == "📊 Overview":

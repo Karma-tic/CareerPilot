@@ -1,6 +1,6 @@
 """
 CareerPilot AI - Modern Streamlit Dashboard UI Component
-Contains custom natural & classy CSS theme, cascading/locked location filters, interactive charts, and forms.
+Contains custom light cream & dark purple CSS theme, cascading/locked location filters, interactive charts, and forms.
 """
 
 import streamlit as st
@@ -45,98 +45,106 @@ CITY_STATE_MAP = {
 
 
 def apply_custom_css():
-    """Inject an aggressive, classy, authentic natural CSS color theme into Streamlit."""
+    """Inject a classy Light Cream & Dark Purple CSS theme into Streamlit."""
     st.markdown(
         """
         <style>
-        /* Force Natural Dark Slate Background & Text Colors */
+        /* Force Light Cream Background & Dark Purple Text Colors */
         html, body, [data-testid="stAppViewContainer"], .stApp {
-            background-color: #18181B !important;
-            color: #F5F5F4 !important;
+            background-color: #FAF7F2 !important;
+            color: #1E1B4B !important;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         }
 
         /* Top Header Navigation Bar */
         header[data-testid="stHeader"] {
-            background-color: #18181B !important;
+            background-color: #FAF7F2 !important;
         }
 
-        /* Sidebar Styling - Dark Slate */
+        /* Sidebar Styling - Deep Royal Dark Purple (#1E1B4B) */
         section[data-testid="stSidebar"] {
-            background-color: #111827 !important;
-            border-right: 1px solid #374151 !important;
+            background-color: #1E1B4B !important;
+            border-right: 1px solid #312E81 !important;
         }
         section[data-testid="stSidebar"] * {
-            color: #E7E5E4 !important;
+            color: #F5F3FF !important;
         }
         
-        /* Metric Card Styling - Natural Emerald (#10B981) Accents */
+        /* Metric Card Styling - Soft Cream Card with Royal Purple Accents */
         div[data-testid="stMetricValue"] {
             font-size: 2.2rem !important;
             font-weight: 700 !important;
-            color: #10B981 !important; /* Natural Emerald */
+            color: #6D28D9 !important; /* Royal Purple */
         }
         
         div[data-testid="stMetricLabel"] {
-            color: #A1A1AA !important;
+            color: #4C1D95 !important;
             font-weight: 600 !important;
         }
 
         div[data-testid="stMetric"] {
-            background-color: #27272A !important;
-            border: 1px solid #3F3F46 !important;
-            border-radius: 10px !important;
+            background-color: #FFFFFF !important;
+            border: 1px solid #DDD6FE !important;
+            border-radius: 12px !important;
             padding: 16px !important;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+            box-shadow: 0 4px 14px rgba(109, 40, 217, 0.08) !important;
         }
 
-        /* Buttons Styling - Forest Emerald & Natural Slate */
+        /* Buttons Styling - Royal Violet Gradient */
         .stButton > button {
-            background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+            background: linear-gradient(135deg, #7C3AED 0%, #5B21B6 100%) !important;
             color: #FFFFFF !important;
-            border: 1px solid #065F46 !important;
+            border: none !important;
             border-radius: 8px !important;
             font-weight: 600 !important;
-            padding: 0.5rem 1.2rem !important;
+            padding: 0.55rem 1.2rem !important;
             transition: all 0.2s ease-in-out !important;
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25) !important;
         }
         .stButton > button:hover {
-            background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4) !important;
-            border-color: #34D399 !important;
+            background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%) !important;
+            box-shadow: 0 6px 16px rgba(124, 58, 237, 0.35) !important;
         }
         
-        /* Inputs, Selectboxes, Textareas */
+        /* Inputs, Selectboxes, Textareas - Light Cream Cards */
         input, select, textarea, div[data-baseweb="select"] {
-            background-color: #27272A !important;
-            color: #F5F5F4 !important;
-            border-color: #3F3F46 !important;
+            background-color: #FFFFFF !important;
+            color: #1E1B4B !important;
+            border-color: #DDD6FE !important;
         }
         
         /* Expanders & Cards */
         div[data-testid="stExpander"] {
-            background-color: #27272A !important;
-            border: 1px solid #3F3F46 !important;
-            border-radius: 10px !important;
+            background-color: #FFFFFF !important;
+            border: 1px solid #DDD6FE !important;
+            border-radius: 12px !important;
+            box-shadow: 0 2px 10px rgba(109, 40, 217, 0.05) !important;
         }
         
         /* Job Card Custom Styling */
         .job-card {
-            background-color: #27272A !important;
-            border: 1px solid #3F3F46 !important;
-            border-radius: 10px !important;
+            background-color: #FFFFFF !important;
+            border: 1px solid #E9D5FF !important;
+            border-radius: 12px !important;
             padding: 20px !important;
             margin-bottom: 15px !important;
+            box-shadow: 0 4px 14px rgba(109, 40, 217, 0.06) !important;
         }
 
         .location-tag {
-            background-color: #3F3F46 !important;
-            color: #F5F5F4 !important;
-            padding: 3px 8px !important;
-            border-radius: 4px !important;
-            font-size: 0.82rem !important;
+            background-color: #F3E8FF !important;
+            color: #581C87 !important;
+            padding: 4px 10px !important;
+            border-radius: 6px !important;
+            font-size: 0.85rem !important;
             font-weight: 600 !important;
+            border: 1px solid #E9D5FF !important;
         }
+
+        /* Status Pills */
+        .badge-applied { background-color: #EDE9FE; color: #5B21B6; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; border: 1px solid #DDD6FE; }
+        .badge-interview { background-color: #FEF3C7; color: #92400E; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; border: 1px solid #FDE68A; }
+        .badge-offer { background-color: #D1FAE5; color: #065F46; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; border: 1px solid #A7F3D0; }
         </style>
         """,
         unsafe_allow_html=True,
@@ -208,7 +216,7 @@ def render_overview_tab():
 
 def render_job_listings_tab():
     """Render 🔍 Job Listings Page with search and locked cascading location filters (State <-> City)."""
-    st.header("🔍 Job Search & Locked Location Filters")
+    st.header("🔍 Job Search & Location Filters")
     st.caption("Cascading location controls: Selecting a State locks valid Cities; selecting a City locks its State.")
 
     # Initialize Session State for Cascading Dropdowns if not present
@@ -240,7 +248,6 @@ def render_job_listings_tab():
                 st.rerun()
 
         with f_col3:
-            # Cities locked to selected state
             valid_cities = STATE_CITY_MAP.get(st.session_state["selected_state"], ["All Cities"])
             city_idx = valid_cities.index(st.session_state["selected_city"]) if st.session_state["selected_city"] in valid_cities else 0
             
@@ -252,7 +259,6 @@ def render_job_listings_tab():
             )
             if chosen_city != st.session_state["selected_city"]:
                 st.session_state["selected_city"] = chosen_city
-                # Automatically lock state if a specific city is selected
                 if chosen_city in CITY_STATE_MAP:
                     st.session_state["selected_state"] = CITY_STATE_MAP[chosen_city]
                 st.rerun()
@@ -298,13 +304,6 @@ def render_job_listings_tab():
                 | (Job.location.ilike(f"%{active_city}%"))
                 | (Job.description.ilike(f"%{active_city}%"))
             )
-            
-        if active_state != "All States":
-            query = query.filter(
-                (Job.state.ilike(f"%{active_state}%"))
-                | (Job.location.ilike(f"%{active_state}%"))
-                | (Job.description.ilike(f"%{active_state}%"))
-            )
 
         if scope_filter == "Remote Only":
             query = query.filter(Job.location.ilike("%Remote%"))
@@ -313,11 +312,11 @@ def render_job_listings_tab():
 
         jobs = query.order_by(Job.id.desc()).all()
 
-        # If 0 jobs found for a specific city filter, trigger automatic scraper generation!
+        # Auto-Scrape Fallback if 0 jobs found for selected city
         if len(jobs) == 0 and active_city != "All Cities":
-            st.info(f"No jobs found in local cache for {active_city}. Running live scraper for {active_city}...")
-            job_scraper.run_scraping_cycle(city=active_city, state=active_state)
-            jobs = query.order_by(Job.id.desc()).all()
+            with st.spinner(f"Fetching live jobs for {active_city}..."):
+                job_scraper.run_scraping_cycle(city=active_city, state=active_state)
+                jobs = query.order_by(Job.id.desc()).all()
 
         st.write(f"Showing **{len(jobs)}** matching job opportunities for **{active_city} ({active_state})**:")
 
@@ -345,15 +344,15 @@ def render_job_listings_tab():
         st.divider()
 
         # Job Cards
-        for j in jobs[:25]:
+        for j in jobs[:30]:
             with st.container():
                 st.markdown(
                     f"""
                     <div class="job-card">
-                        <h3 style="color:#10B981; margin-bottom:5px;">{j.title}</h3>
-                        <p style="color:#D4D4D8; font-size:1.0rem;"><strong>{j.company}</strong> • <span class="location-tag">📍 {j.city or 'Bhopal'}, {j.state or 'MP'}</span> • <span style="color:#F59E0B; font-weight:600;">{j.salary}</span></p>
-                        <p style="color:#A1A1AA; font-size:0.9rem;">{j.description[:250]}...</p>
-                        <p style="color:#71717A; font-size:0.85rem;"><strong>Skills:</strong> {j.skills or 'Python, Engineering'}</p>
+                        <h3 style="color:#6D28D9; margin-bottom:5px; font-weight:700;">{j.title}</h3>
+                        <p style="color:#374151; font-size:1.0rem;"><strong>{j.company}</strong> • <span class="location-tag">📍 {j.city or 'Bhopal'}, {j.state or 'MP'}</span> • <span style="color:#D97706; font-weight:600;">{j.salary}</span></p>
+                        <p style="color:#4B5563; font-size:0.92rem; line-height:1.5;">{j.description[:280]}...</p>
+                        <p style="color:#6B7280; font-size:0.85rem;"><strong>Required Skills:</strong> {j.skills or 'Python, Engineering'}</p>
                     </div>
                     """,
                     unsafe_allow_html=True,
@@ -623,7 +622,7 @@ def render_settings_tab():
             
             st.subheader("🎙️ Voice & System Settings")
             wake_word = st.text_input("Voice Wake Word", value=settings.voice_wake_word or "CareerPilot")
-            theme = st.selectbox("UI Theme", ["natural", "dark"], index=0)
+            theme = st.selectbox("UI Theme", ["cream", "dark"], index=0)
 
             submitted = st.form_submit_button("💾 Save Settings")
             if submitted:

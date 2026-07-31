@@ -50,7 +50,7 @@ class DatabaseManager:
         return self.Session()
 
     def seed_sample_data(self):
-        """Seed realistic sample data into the database if empty or if city jobs are missing."""
+        """Seed realistic sample data into the database if empty or missing city jobs."""
         session = self.get_session()
         try:
             # Check if settings exist
@@ -64,7 +64,7 @@ class DatabaseManager:
                     voice_enabled=True,
                     voice_wake_word="CareerPilot",
                     openai_api_key="",
-                    theme="natural",
+                    theme="cream",
                     db_path=str(DATABASE_URL),
                 )
                 session.add(default_settings)
@@ -87,172 +87,200 @@ class DatabaseManager:
                 session.add(sample_resume)
                 logger.info("Seeded sample resume.")
 
-            # Always ensure Bhopal and Indore city jobs exist in the database!
-            bhopal_count = session.query(Job).filter(Job.city == "Bhopal").count()
-            if bhopal_count == 0:
-                sample_jobs = [
-                    # Bhopal, MP Jobs
-                    {
-                        "company": "MP Smart Infra & Tech",
-                        "title": "Senior Python & AI Architect",
-                        "salary": "₹18,00,000 - ₹24,00,000",
-                        "location": "Bhopal, Madhya Pradesh",
-                        "city": "Bhopal",
-                        "state": "Madhya Pradesh",
-                        "experience": "Senior Level (5+ yrs)",
-                        "description": "Leading tech innovation firm in Bhopal IT Park seeking a Senior Python Architect to build LLM applications, FastAPI backend services, and automated data pipelines.",
-                        "url": "https://bhopaltech.example.com/job/101",
-                        "date_posted": "2026-07-29",
-                        "source": "MP Tech Hub Portal",
-                        "skills": "Python, OpenAI API, FastAPI, Streamlit, PostgreSQL, Docker",
-                    },
-                    {
-                        "company": "Bhopal Cyber & Data Labs",
-                        "title": "Python Automation & Scraper Engineer",
-                        "salary": "₹12,00,000 - ₹16,00,000",
-                        "location": "Bhopal, Madhya Pradesh",
-                        "city": "Bhopal",
-                        "state": "Madhya Pradesh",
-                        "experience": "Mid Level (3+ yrs)",
-                        "description": "Develop high-throughput web scrapers, browser automation with Playwright, and ETL pipelines in Bhopal, MP.",
-                        "url": "https://bhopalcyber.example.com/jobs/automation",
-                        "date_posted": "2026-07-31",
-                        "source": "Bhopal Careers",
-                        "skills": "Python, Playwright, BeautifulSoup, Scraping, Redis, SQL",
-                    },
-                    {
-                        "company": "VNS Tech Solutions",
-                        "title": "Junior Python Developer",
-                        "salary": "₹6,00,000 - ₹9,00,000",
-                        "location": "Bhopal, Madhya Pradesh",
-                        "city": "Bhopal",
-                        "state": "Madhya Pradesh",
-                        "experience": "Entry Level (1-2 yrs)",
-                        "description": "Python web developer role in Bhopal working with Flask, SQLite, HTML/CSS, and REST APIs.",
-                        "url": "https://vnstech.example.com/jobs/jr-python",
-                        "date_posted": "2026-07-30",
-                        "source": "Bhopal Careers",
-                        "skills": "Python, Flask, SQL, HTML/CSS, Git",
-                    },
+            # Ensure rich set of Bhopal, Indore, MP, Bangalore, Mumbai, and Remote tech jobs exist
+            sample_jobs = [
+                # Bhopal, MP Jobs
+                {
+                    "company": "Bhopal Smart Tech Systems",
+                    "title": "Senior Python & AI Architect",
+                    "salary": "₹18,00,000 - ₹24,00,000",
+                    "location": "Bhopal, Madhya Pradesh",
+                    "city": "Bhopal",
+                    "state": "Madhya Pradesh",
+                    "experience": "Senior Level (5+ yrs)",
+                    "description": "Leading tech innovation firm in Bhopal IT Park seeking a Senior Python Architect to build LLM applications, FastAPI backend services, and automated data pipelines.",
+                    "url": "https://bhopaltech.example.com/job/101",
+                    "date_posted": "2026-07-29",
+                    "source": "Bhopal Tech Hub",
+                    "skills": "Python, OpenAI API, FastAPI, Streamlit, PostgreSQL, Docker",
+                },
+                {
+                    "company": "MP Digital Innovation Hub (Bhopal)",
+                    "title": "Full Stack Python Developer",
+                    "salary": "₹14,00,000 - ₹18,00,000",
+                    "location": "Bhopal, Madhya Pradesh",
+                    "city": "Bhopal",
+                    "state": "Madhya Pradesh",
+                    "experience": "Mid Level (3+ yrs)",
+                    "description": "Full-stack developer role in Bhopal working with Python, Django, React, and PostgreSQL for smart city initiatives.",
+                    "url": "https://mpdigital.example.com/jobs/bhopal-fs",
+                    "date_posted": "2026-07-31",
+                    "source": "Bhopal Tech Hub",
+                    "skills": "Python, Django, React, PostgreSQL, Docker",
+                },
+                {
+                    "company": "Bhopal Cyber & Data Labs",
+                    "title": "Python Automation & Scraper Engineer",
+                    "salary": "₹12,00,000 - ₹16,00,000",
+                    "location": "Bhopal, Madhya Pradesh",
+                    "city": "Bhopal",
+                    "state": "Madhya Pradesh",
+                    "experience": "Mid Level (3+ yrs)",
+                    "description": "Develop high-throughput web scrapers, browser automation with Playwright, and ETL pipelines in Bhopal, MP.",
+                    "url": "https://bhopalcyber.example.com/jobs/automation",
+                    "date_posted": "2026-07-31",
+                    "source": "Bhopal Careers",
+                    "skills": "Python, Playwright, BeautifulSoup, Scraping, Redis, SQL",
+                },
+                {
+                    "company": "VNS Tech Solutions (Bhopal)",
+                    "title": "Junior Python & Backend Developer",
+                    "salary": "₹6,00,000 - ₹9,00,000",
+                    "location": "Bhopal, Madhya Pradesh",
+                    "city": "Bhopal",
+                    "state": "Madhya Pradesh",
+                    "experience": "Entry Level (1-2 yrs)",
+                    "description": "Python web developer role in Bhopal working with Flask, SQLite, HTML/CSS, and REST APIs.",
+                    "url": "https://vnstech.example.com/jobs/jr-python",
+                    "date_posted": "2026-07-30",
+                    "source": "Bhopal Careers",
+                    "skills": "Python, Flask, SQL, HTML/CSS, Git",
+                },
 
-                    # Indore, MP Jobs
-                    {
-                        "company": "Indore Software Labs",
-                        "title": "Full-Stack Python & Streamlit Engineer",
-                        "salary": "₹14,00,000 - ₹18,00,000",
-                        "location": "Indore, Madhya Pradesh",
-                        "city": "Indore",
-                        "state": "Madhya Pradesh",
-                        "experience": "Mid-Senior Level",
-                        "description": "Develop analytical dashboards, machine learning tools, and automated workflows using Streamlit and Pandas in Crystal IT Park, Indore.",
-                        "url": "https://indorelabs.example.com/careers/fs-python",
-                        "date_posted": "2026-07-30",
-                        "source": "MP Job Portal",
-                        "skills": "Python, Streamlit, Pandas, Plotly, SQLite, Git",
-                    },
-                    {
-                        "company": "Malwa Analytics Indore",
-                        "title": "Data Scientist & Predictive Modeler",
-                        "salary": "₹15,00,000 - ₹20,00,000",
-                        "location": "Indore, Madhya Pradesh",
-                        "city": "Indore",
-                        "state": "Madhya Pradesh",
-                        "experience": "Mid Level",
-                        "description": "Analyze large enterprise datasets and build machine learning predictive models in Indore.",
-                        "url": "https://malwaanalytics.example.com/jobs/ds",
-                        "date_posted": "2026-07-28",
-                        "source": "MP Job Portal",
-                        "skills": "Python, Data Science, Pandas, Scikit-Learn, Plotly",
-                    },
+                # Indore, MP Jobs
+                {
+                    "company": "Indore Software Labs",
+                    "title": "Full-Stack Python & Streamlit Engineer",
+                    "salary": "₹14,00,000 - ₹18,00,000",
+                    "location": "Indore, Madhya Pradesh",
+                    "city": "Indore",
+                    "state": "Madhya Pradesh",
+                    "experience": "Mid-Senior Level",
+                    "description": "Develop analytical dashboards, machine learning tools, and automated workflows using Streamlit and Pandas in Crystal IT Park, Indore.",
+                    "url": "https://indorelabs.example.com/careers/fs-python",
+                    "date_posted": "2026-07-30",
+                    "source": "MP Job Portal",
+                    "skills": "Python, Streamlit, Pandas, Plotly, SQLite, Git",
+                },
+                {
+                    "company": "Malwa Analytics Indore",
+                    "title": "Data Scientist & Predictive Modeler",
+                    "salary": "₹15,00,000 - ₹20,00,000",
+                    "location": "Indore, Madhya Pradesh",
+                    "city": "Indore",
+                    "state": "Madhya Pradesh",
+                    "experience": "Mid Level",
+                    "description": "Analyze large enterprise datasets and build machine learning predictive models in Indore.",
+                    "url": "https://malwaanalytics.example.com/jobs/ds",
+                    "date_posted": "2026-07-28",
+                    "source": "MP Job Portal",
+                    "skills": "Python, Data Science, Pandas, Scikit-Learn, Plotly",
+                },
 
-                    # Bangalore Jobs
-                    {
-                        "company": "Bangalore Cloud Analytics",
-                        "title": "Senior Data & ML Engineer",
-                        "salary": "₹25,00,000 - ₹35,00,000",
-                        "location": "Bangalore, Karnataka",
-                        "city": "Bangalore",
-                        "state": "Karnataka",
-                        "experience": "Senior (6+ yrs)",
-                        "description": "Cloud data architecture and model deployment infrastructure engineer on AWS in Bangalore.",
-                        "url": "https://bangalorecloud.example.com/jobs/ml-sr",
-                        "date_posted": "2026-07-27",
-                        "source": "TechInAsia",
-                        "skills": "Python, AWS, PyTorch, Scikit-Learn, Docker, Kubernetes",
-                    },
+                # Bangalore Jobs
+                {
+                    "company": "Bangalore Cloud Analytics",
+                    "title": "Senior Data & ML Engineer",
+                    "salary": "₹25,00,000 - ₹35,00,000",
+                    "location": "Bangalore, Karnataka",
+                    "city": "Bangalore",
+                    "state": "Karnataka",
+                    "experience": "Senior (6+ yrs)",
+                    "description": "Cloud data architecture and model deployment infrastructure engineer on AWS in Bangalore.",
+                    "url": "https://bangalorecloud.example.com/jobs/ml-sr",
+                    "date_posted": "2026-07-27",
+                    "source": "TechInAsia",
+                    "skills": "Python, AWS, PyTorch, Scikit-Learn, Docker, Kubernetes",
+                },
 
-                    # Mumbai Jobs
-                    {
-                        "company": "Mumbai Quant Tech",
-                        "title": "Python Quantitative Software Engineer",
-                        "salary": "₹22,00,000 - ₹30,00,000",
-                        "location": "Mumbai, Maharashtra",
-                        "city": "Mumbai",
-                        "state": "Maharashtra",
-                        "experience": "Senior Level",
-                        "description": "Develop high-frequency trading tools, quantitative analytical software, and risk engines in BKC, Mumbai.",
-                        "url": "https://mumbaiquant.example.com/jobs/quant-dev",
-                        "date_posted": "2026-07-30",
-                        "source": "Naukri",
-                        "skills": "Python, C++, NumPy, Pandas, SQL, System Design",
-                    },
-                ]
+                # Mumbai Jobs
+                {
+                    "company": "Mumbai Quant Tech",
+                    "title": "Python Quantitative Software Engineer",
+                    "salary": "₹22,00,000 - ₹30,00,000",
+                    "location": "Mumbai, Maharashtra",
+                    "city": "Mumbai",
+                    "state": "Maharashtra",
+                    "experience": "Senior Level",
+                    "description": "Develop high-frequency trading tools, quantitative analytical software, and risk engines in BKC, Mumbai.",
+                    "url": "https://mumbaiquant.example.com/jobs/quant-dev",
+                    "date_posted": "2026-07-30",
+                    "source": "Naukri",
+                    "skills": "Python, C++, NumPy, Pandas, SQL, System Design",
+                },
 
-                job_objects = []
-                for j in sample_jobs:
-                    existing = session.query(Job).filter(Job.url == j["url"]).first()
-                    if not existing:
-                        job_obj = Job(
-                            company=j["company"],
-                            title=j["title"],
-                            salary=j["salary"],
-                            location=j["location"],
-                            city=j["city"],
-                            state=j["state"],
-                            experience=j["experience"],
-                            description=j["description"],
-                            url=j["url"],
-                            date_posted=j["date_posted"],
-                            source=j["source"],
-                            skills=j["skills"],
-                        )
-                        job_objects.append(job_obj)
+                # Remote Jobs
+                {
+                    "company": "OpenAI Partner Tech",
+                    "title": "Lead LLM & Python Developer",
+                    "salary": "$160,000 - $190,000",
+                    "location": "Remote (India / Global)",
+                    "city": "Remote",
+                    "state": "Remote",
+                    "experience": "Senior Level (5+ yrs)",
+                    "description": "Remote LLM development position designing enterprise AI workflows and microservices.",
+                    "url": "https://openaipartner.example.com/job/201",
+                    "date_posted": "2026-07-28",
+                    "source": "RemoteOK",
+                    "skills": "Python, OpenAI API, LangChain, PyTorch, Docker",
+                },
+            ]
 
-                if job_objects:
-                    session.add_all(job_objects)
-                    session.commit()
-                    logger.info(f"Seeded {len(job_objects)} city jobs.")
+            job_objects = []
+            for j in sample_jobs:
+                existing = session.query(Job).filter(Job.url == j["url"]).first()
+                if not existing:
+                    job_obj = Job(
+                        company=j["company"],
+                        title=j["title"],
+                        salary=j["salary"],
+                        location=j["location"],
+                        city=j["city"],
+                        state=j["state"],
+                        experience=j["experience"],
+                        description=j["description"],
+                        url=j["url"],
+                        date_posted=j["date_posted"],
+                        source=j["source"],
+                        skills=j["skills"],
+                    )
+                    job_objects.append(job_obj)
 
-                # Seed sample applications linked to jobs
-                added_jobs = session.query(Job).all()
-                statuses = ["Applied", "Interview", "Offer"]
-                notes_list = [
-                    "Applied via Bhopal Tech local portal. Initial screening scheduled.",
-                    "Passed technical screening. Scheduled 2nd round system design interview.",
-                    "Received formal offer letter! Evaluating compensation package.",
-                ]
-
-                for i, job_item in enumerate(added_jobs[:3]):
-                    existing_app = session.query(Application).filter(Application.job_id == job_item.id).first()
-                    if not existing_app:
-                        status = statuses[i % len(statuses)]
-                        interview_date = (
-                            datetime.now() + timedelta(days=random.randint(1, 7))
-                            if status == "Interview"
-                            else None
-                        )
-                        app = Application(
-                            job_id=job_item.id,
-                            applied_date=datetime.now()
-                            - timedelta(days=random.randint(2, 10)),
-                            status=status,
-                            interview_date=interview_date,
-                            notes=notes_list[i % len(notes_list)],
-                        )
-                        session.add(app)
-
+            if job_objects:
+                session.add_all(job_objects)
                 session.commit()
-                logger.info("Seeded sample job applications.")
+                logger.info(f"Seeded {len(job_objects)} city jobs.")
+
+            # Seed sample applications linked to jobs
+            added_jobs = session.query(Job).all()
+            statuses = ["Applied", "Interview", "Offer"]
+            notes_list = [
+                "Applied via Bhopal Tech local portal. Initial screening scheduled.",
+                "Passed technical screening. Scheduled 2nd round system design interview.",
+                "Received formal offer letter! Evaluating compensation package.",
+            ]
+
+            for i, job_item in enumerate(added_jobs[:3]):
+                existing_app = session.query(Application).filter(Application.job_id == job_item.id).first()
+                if not existing_app:
+                    status = statuses[i % len(statuses)]
+                    interview_date = (
+                        datetime.now() + timedelta(days=random.randint(1, 7))
+                        if status == "Interview"
+                        else None
+                    )
+                    app = Application(
+                        job_id=job_item.id,
+                        applied_date=datetime.now()
+                        - timedelta(days=random.randint(2, 10)),
+                        status=status,
+                        interview_date=interview_date,
+                        notes=notes_list[i % len(notes_list)],
+                    )
+                    session.add(app)
+
+            session.commit()
+            logger.info("Seeded sample job applications.")
 
         except Exception as e:
             session.rollback()

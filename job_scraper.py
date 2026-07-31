@@ -57,6 +57,53 @@ class JobScraper:
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
         }
 
+    def scrape_remotive(self, category: str = "software-dev") -> list[dict]:
+        """Scrape jobs from Remotive public API."""
+        scraped_jobs = []
+        url = f"https://remotive.com/api/remote-jobs?category={category}&limit=30"
+        try:
+            logger.info("Fetching job postings from Remotive API...")
+            response = requests.get(url, headers=self.headers, timeout=10)
+            if response.status_code == 200:
+                data = response.json()
+                jobs_data = data.get("jobs", [])
+                for item in jobs_data[:30]:
+                    title = item.get("title", "Software Developer")
+                    company = item.get("company_name", "Tech Company")
+                    location = item.get("candidate_required_location", "Remote")
+                    description = item.get("description", "")
+                    job_url = item.get("url", f"https://remotive.com/job/{item.get('id', '')}")
+                    date_posted = item.get("publication_date", datetime.utcnow().strftime("%Y-%m-%d"))[:10]
+                    salary = item.get("salary") or "$115,000 - $155,000"
+
+                    clean_desc = BeautifulSoup(description, "html.parser").get_text()[:1000]
+                    extracted_skills = extract_skills_from_text(clean_desc + " " + title)
+                    skills_str = ", ".join(extracted_skills) if extracted_skills else "Python, Web, Software"
+
+                    city, state = detect_city_state(location + " " + clean_desc[:200])
+
+                    job_dict = {
+                        "company": company,
+                        "title": title,
+                        "salary": salary,
+                        "location": location if location else "Remote",
+                        "city": city,
+                        "state": state,
+                        "experience": "Mid-Senior Level",
+                        "description": clean_desc,
+                        "url": job_url,
+                        "date_posted": date_posted,
+                        "source": "Remotive",
+                        "skills": skills_str
+                    }
+                    scraped_jobs.append(job_dict)
+
+            logger.info(f"Scraped {len(scraped_jobs)} jobs from Remotive.")
+        except Exception as e:
+            logger.error(f"Error scraping Remotive API: {e}", exc_info=True)
+
+        return scraped_jobs
+
     def scrape_remoteok(self, keywords: list[str] = None) -> list[dict]:
         """Scrape remote software development jobs from RemoteOK RSS/API."""
         scraped_jobs = []
@@ -170,7 +217,7 @@ class JobScraper:
 
         sample_local = [
             {
-                "company": f"{city_name} NextGen Tech",
+                "company": f"{city_name} NextGen Tech Hub",
                 "title": f"Lead Python & AI Engineer ({city_name})",
                 "salary": "₹16,00,000 - ₹22,00,000",
                 "location": f"{city_name}, {state_name}",
@@ -180,7 +227,7 @@ class JobScraper:
                 "description": f"Tech firm in {city_name} hiring a Senior Python Engineer for web applications, automation, and AI workflows.",
                 "url": f"https://{city_name.lower()}nextgen.example.com/job/{time.time()}",
                 "date_posted": datetime.now().strftime("%Y-%m-%d"),
-                "source": "Local City Portal",
+                "source": f"{city_name} Tech Hub",
                 "skills": "Python, FastAPI, Streamlit, PostgreSQL, Docker"
             },
             {
@@ -194,7 +241,7 @@ class JobScraper:
                 "description": f"Full-stack developer role in {city_name} working with Python, Flask, React, and SQL database systems.",
                 "url": f"https://{city_name.lower()}datasystems.example.com/job/{time.time()+1}",
                 "date_posted": datetime.now().strftime("%Y-%m-%d"),
-                "source": "Local City Portal",
+                "source": f"{city_name} Tech Hub",
                 "skills": "Python, Flask, SQL, React, Git"
             }
         ]
@@ -219,10 +266,12 @@ class JobScraper:
                 continue
             if is_hybrid and "hybrid" not in loc and "hybrid" not in text:
                 continue
-            if city and city.lower() not in loc and city.lower() != "all cities":
-                continue
-            if state and state.lower() not in loc and state.lower() != "all states":
-                continue
+            if city and city.lower() != "all cities":
+                if city.lower() not in loc and city.lower() not in text:
+                    continue
+            if state and state.lower() != "all states":
+                if state.lower() not in loc and state.lower() not in text:
+                    continue
             if keywords:
                 match = any(kw.lower() in text for kw in keywords if kw.strip())
                 if not match:
@@ -288,6 +337,7 @@ class JobScraper:
         """Main scraping orchestrator cycle."""
         logger.info("Starting complete job scraping cycle...")
         jobs = []
+        jobs.extend(self.scrape_remotive())
         jobs.extend(self.scrape_remoteok(keywords))
         jobs.extend(self.scrape_weworkremotely())
         jobs.extend(self.scrape_local_regional_jobs(target_city=city))
